@@ -25,7 +25,7 @@ fi
 [ ! -d "$ROOTDIR" ] && mkdir -p "$ROOTDIR"
 cd "$ROOTDIR"
 
-[ ! -d "libXISF" ] && git clone https://gitea.nouspiro.space/nou/libXISF.git || { echo "Failed to clone LibXISF"; exit 1; }
+[ ! -d "libXISF" ] && { git clone https://gitea.nouspiro.space/nou/libXISF.git || { echo "Failed to clone LibXISF"; exit 1; } }
 cd libXISF
 git fetch origin
 git switch -d --discard-changes $LIBXISF_COMMIT
@@ -35,7 +35,7 @@ make -j $JOBS || { echo "LibXISF compilation failed"; exit 1; }
 sudo make install || { echo "LibXISF installation failed"; exit 1; }
 
 cd "$ROOTDIR"
-[ ! -d "indi" ] && git clone https://github.com/indilib/indi.git || { echo "Failed to clone indi"; exit 1 }
+[ ! -d "indi" ] && { git clone https://github.com/indilib/indi.git || { echo "Failed to clone indi"; exit 1 } }
 cd indi
 git fetch origin
 git switch -d --discard-changes $INDI_COMMIT
@@ -45,7 +45,7 @@ make -j $JOBS || { echo "INDI compilation failed"; exit 1; }
 sudo make install || { echo "INDI installation failed"; exit 1; }
 
 cd "$ROOTDIR"
-[ ! -d "indi-3rdparty" ] && git clone https://github.com/indilib/indi-3rdparty.git || { echo "Failed to clone indi 3rdparty"; exit 1 }
+[ ! -d "indi-3rdparty" ] && { git clone https://github.com/indilib/indi-3rdparty.git || { echo "Failed to clone indi 3rdparty"; exit 1; } }
 cd indi-3rdparty
 git fetch origin
 git switch -d --discard-changes $INDI_3RD_COMMIT
@@ -60,7 +60,7 @@ make -j $JOBS || { echo "INDI 3rd-party compilation failed"; exit 1; }
 sudo make install || { echo "INDI lib installation failed"; exit 1; }
 
 cd "$ROOTDIR"
-[ ! -d "stellarsolver" ] && git clone https://github.com/rlancaste/stellarsolver.git || { echo "Failed to clone stellarsolver"; exit 1 }
+[ ! -d "stellarsolver" ] && { git clone https://github.com/rlancaste/stellarsolver.git || { echo "Failed to clone stellarsolver"; exit 1; } }
 cd stellarsolver
 git fetch origin
 git switch -d --discard-changes $STELLAR_COMMIT
@@ -70,7 +70,7 @@ make -j $JOBS || { echo "Stellarsolver compilation failed"; exit 1; }
 sudo make install || { echo "Stellarsolver installation failed"; exit 1; }
 
 cd "$ROOTDIR"
-[ ! -d "kstars" ] && git clone https://invent.kde.org/education/kstars.git || { echo "Failed to clone KStars"; exit 1 }
+[ ! -d "kstars" ] && { git clone https://invent.kde.org/education/kstars.git || { echo "Failed to clone KStars"; exit 1; } }
 cd kstars
 git fetch origin
 git switch -d --discard-changes $KSTARS_COMMIT
@@ -84,7 +84,7 @@ sudo ldconfig
 [ "$1" != "phd2" ] && exit
 
 cd "$ROOTDIR"
-[ ! -d "phd2" ] && git clone https://github.com/OpenPHDGuiding/phd2.git || { echo "Failed to clone PHD2"; exit 1 }
+[ ! -d "phd2" ] && { git clone https://github.com/OpenPHDGuiding/phd2.git || { echo "Failed to clone PHD2"; exit 1 } }
 cd phd2
 git fetch origin
 git switch -d --discard-changes "v2.6.12"
