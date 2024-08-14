@@ -35,7 +35,7 @@ make -j $JOBS || { echo "LibXISF compilation failed"; exit 1; }
 sudo make install || { echo "LibXISF installation failed"; exit 1; }
 
 cd "$ROOTDIR"
-[ ! -d "indi" ] && { git clone https://github.com/indilib/indi.git || { echo "Failed to clone indi"; exit 1 } }
+[ ! -d "indi" ] && { git clone https://github.com/indilib/indi.git || { echo "Failed to clone indi"; exit 1; } }
 cd indi
 git fetch origin
 git switch -d --discard-changes $INDI_COMMIT
@@ -84,7 +84,7 @@ sudo ldconfig
 [ "$1" != "phd2" ] && exit
 
 cd "$ROOTDIR"
-[ ! -d "phd2" ] && { git clone https://github.com/OpenPHDGuiding/phd2.git || { echo "Failed to clone PHD2"; exit 1 } }
+[ ! -d "phd2" ] && { git clone https://github.com/OpenPHDGuiding/phd2.git || { echo "Failed to clone PHD2"; exit 1; } }
 cd phd2
 git fetch origin
 git switch -d --discard-changes "v2.6.12"
