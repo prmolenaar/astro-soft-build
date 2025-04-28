@@ -10,4 +10,4 @@ sudo apt install libnova-dev libcfitsio-dev libusb-1.0-0-dev zlib1g-dev libgsl-d
         wcslib-dev libqt5websockets5-dev xplanet xplanet-images qt5keychain-dev libsecret-1-dev breeze-icon-theme qml-module-qtquick-controls \
         pkg-config libev-dev libqt5datavisualization5-dev libzmq3-dev libopencv-dev
 
-[ "$1" == "phd2" ] && sudo apt install build-essential libwxgtk3.2-dev wx-common wx3.2-i18n libindi-dev libx11-dev libgtest-dev
+[ "$1" == "phd2" ] && sudo apt install build-essential libwxgtk3.2-dev wx-common wx3.2-i18n libx11-dev libgtest-dev

@@ -33,6 +33,7 @@ echo "Start build at:        `date`" >> $BUILD_DIR/build_log.txt
 [ -f build-indi-3rdparty/install_manifest.txt ] && echo "Deleting INDI 3rdparty"; cat build-indi-3rdparty/install_manifest.txt | sudo xargs rm -f
 [ -f build-stellarsolver/install_manifest.txt ] && echo "Deleting stellarsolver"; cat build-stellarsolver/install_manifest.txt | sudo xargs rm -f
 [ -f build-kstars/install_manifest.txt ] && echo "Deleting KStars"; cat build-kstars/install_manifest.txt | sudo xargs rm -f
+[ -f build-phd2/install_manifest.txt ] && echo "Deleting PHD2"; cat build-phd2/install_manifest.txt | sudo xargs rm -f
 
 echo "building libXISF:      `date`" >> $BUILD_DIR/build_log.txt
 [ ! -d "libXISF" ] && { git clone https://gitea.nouspiro.space/nou/libXISF.git || { echo "Failed to clone LibXISF"; exit 1; } }
