@@ -6,7 +6,7 @@ export CXXFLAGS="-march=native -w -Wno-psabi -D_FILE_OFFSET_BITS=64"
 CHECKOUT=0
 # you can set custom BUILD_DIR
 BUILD_DIR=${BUILD_DIR:-$HOME}
-ROOTDIR="$BUILD_DIR/astro-soft"
+ROOTDIR="$BUILD_DIR/astro-soft-latest"
 
 JOBS=$(grep -c ^processor /proc/cpuinfo)
 
@@ -24,12 +24,13 @@ echo "Build dir = $BUILD_DIR"
 echo "Root dir  = $ROOTDIR"
 echo "Jobs      = $JOBS"
 
-echo "Start build at:        `date`" >> $BUILD_DIR/build_log.txt
+echo "------------------------------------------------------------" >> $BUILD_DIR/build_log.txt
+echo "Start build at:                `date`" >> $BUILD_DIR/build_log.txt
 
 # delete all previously installed files
 [ -f build-libXISF/install_manifest.txt ] && echo "Deleting libXISF"; cat build-libXISF/install_manifest.txt | sudo xargs rm -f
 [ -f build-indi/install_manifest.txt ] && echo "Deleting INDI"; cat build-indi/install_manifest.txt | sudo xargs rm -f
-[ -f build-indi-lib/install_manifest.txt ] && cat build-indi-lib/install_manifest.txt | sudo xargs rm -f
+[ -f build-indi-3rdparty-lib/install_manifest.txt ] && echo "Deleting INDI-3rdparty-lib"; cat build-indi-3rdparty-lib/install_manifest.txt | sudo xargs rm -f
 [ -f build-indi-3rdparty/install_manifest.txt ] && echo "Deleting INDI 3rdparty"; cat build-indi-3rdparty/install_manifest.txt | sudo xargs rm -f
 [ -f build-stellarsolver/install_manifest.txt ] && echo "Deleting stellarsolver"; cat build-stellarsolver/install_manifest.txt | sudo xargs rm -f
 [ -f build-kstars/install_manifest.txt ] && echo "Deleting KStars"; cat build-kstars/install_manifest.txt | sudo xargs rm -f
@@ -39,7 +40,7 @@ echo "Start build at:        `date`" >> $BUILD_DIR/build_log.txt
 [ ! -d "libXISF" ] && { git clone https://gitea.nouspiro.space/nou/libXISF.git || { echo "Failed to clone LibXISF"; exit 1; } }
 cd libXISF
 git pull origin
-echo "Build LibXISF: `date`" >> $BUILD_DIR/build_log.txt
+echo "Build LibXISF:                 `date`" >> $BUILD_DIR/build_log.txt
 [ ! -d ../build-libXISF ] && { cmake -B ../build-libXISF ../libXISF -DCMAKE_BUILD_TYPE=Release || { echo "LibXISF configuration failed"; exit 1; } }
 cd ../build-libXISF
 make -j $JOBS || { echo "LibXISF compilation failed"; exit 1; }
@@ -50,7 +51,7 @@ cd "$ROOTDIR"
 [ ! -d "indi" ] && { git clone --depth=1 https://github.com/indilib/indi.git || { echo "Failed to clone indi"; exit 1; } }
 cd indi
 git pull origin
-echo "Build INDI: `date`" >> $BUILD_DIR/build_log.txt
+echo "Build INDI:                    `date`" >> $BUILD_DIR/build_log.txt
 [ ! -d ../build-indi ] && { cmake -B ../build-indi ../indi -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release || { echo "INDI configuration failed"; exit 1; } }
 cd ../build-indi
 make -j $JOBS || { echo "INDI compilation failed"; exit 1; }
@@ -61,7 +62,12 @@ cd "$ROOTDIR"
 [ ! -d "indi-3rdparty" ] && { git clone --depth=1 https://github.com/indilib/indi-3rdparty.git || { echo "Failed to clone indi 3rdparty"; exit 1; } }
 cd indi-3rdparty
 git pull origin
-echo "Build INDI 3rdparty-lib `date`" >> $BUILD_DIR/build_log.txt
+
+#~ In indi-3rdparty/CMakeLists.txt, turn off flag WITH_AHP_GT and WITH_AHP_XC, because the libraries are not (yet) available in raspbian
+sed -i 's/option(WITH_AHP_XC "Install AHP XC Correlators Driver" On)/option(WITH_AHP_XC "Install AHP XC Correlators Driver" Off)/' CMakeLists.txt
+sed -i 's/option(WITH_AHP_GT "Install AHP GT Controllers Driver" On)/option(WITH_AHP_GT "Install AHP GT Controllers Driver" Off)/' CMakeLists.txt
+
+echo "Build INDI 3rdparty-lib        `date`" >> $BUILD_DIR/build_log.txt
 [ ! -d ../build-indi-3rdparty-lib ] && { cmake -B ../build-indi-3rdparty-lib ../indi-3rdparty -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_LIBS=1 -DCMAKE_BUILD_TYPE=Release || { echo "INDI 3rdparty-lib configuration failed"; exit 1; } }
 cd ../build-indi-3rdparty-lib
 make -j $JOBS || { echo "INDI 3rdparty-lib compilation failed"; exit 1; }
@@ -78,7 +84,7 @@ cd "$ROOTDIR"
 [ ! -d "stellarsolver" ] && { git clone --depth=1 https://github.com/rlancaste/stellarsolver.git || { echo "Failed to clone stellarsolver"; exit 1; } }
 cd stellarsolver
 git pull origin
-echo "Build Stellarsolver `date`" >> $BUILD_DIR/build_log.txt
+echo "Build Stellarsolver            `date`" >> $BUILD_DIR/build_log.txt
 [ ! -d ../build-stellarsolver ] && { cmake -B ../build-stellarsolver ../stellarsolver -DCMAKE_BUILD_TYPE=Release || { echo "Stellarsolfer configuration failed"; exit 1; } }
 cd ../build-stellarsolver
 make -j $JOBS || { echo "Stellarsolver compilation failed"; exit 1; }
@@ -89,7 +95,7 @@ cd "$ROOTDIR"
 [ ! -d "kstars" ] && { git clone --depth=1 https://invent.kde.org/education/kstars.git || { echo "Failed to clone KStars"; exit 1; } }
 cd kstars
 git pull origin
-echo "Build KStars `date`" >> $BUILD_DIR/build_log.txt
+echo "Build KStars                   `date`" >> $BUILD_DIR/build_log.txt
 [ ! -d ../build-kstars ] && { cmake -B ../build-kstars -DBUILD_TESTING=Off ../kstars -DCMAKE_BUILD_TYPE=Release || { echo "KStars configuration failed"; exit 1; } }
 cd ../build-kstars
 make -j $JOBS || { echo "KStars compilation failed"; exit 1; }
@@ -104,10 +110,10 @@ cd "$ROOTDIR"
 [ ! -d "phd2" ] && { git clone --depth=1 https://github.com/OpenPHDGuiding/phd2.git || { echo "Failed to clone PHD2"; exit 1; } }
 cd phd2
 git pull origin
-echo "Build PHD2 `date`" >> $BUILD_DIR/build_log.txt
+echo "Build PHD2                     `date`" >> $BUILD_DIR/build_log.txt
 [ ! -d ../build-phd2 ] && { cmake -B ../build-phd2 ../phd2 -DCMAKE_BUILD_TYPE=Release || { echo "PHD2 configuration failed"; exit 1; } }
 cd ../build-phd2
 make -j $JOBS || { echo "PHD2 compilation failed"; exit 1; }
 sudo make install || { echo "PHD2 installation failed"; exit 1; }
 
-echo "Build finished: `date`" >> $BUILD_DIR/build_log.txt
+echo "Build finished:                `date`" >> $BUILD_DIR/build_log.txt
