@@ -4,11 +4,11 @@ export CFLAGS="-march=native -w -Wno-psabi -D_FILE_OFFSET_BITS=64"
 export CXXFLAGS="-march=native -w -Wno-psabi -D_FILE_OFFSET_BITS=64"
 
 LIBXISF_COMMIT="v0.2.13"
-INDI_COMMIT="v2.1.3"
-INDI_3RD_COMMIT="v2.1.3"
-STELLAR_COMMIT="157092d6f843fb987818bd61f0b14b440eca3146"
-KSTARS_COMMIT="origin/stable-3.7.6"
-PHD2_COMMIT="v2.6.13"
+INDI_COMMIT="v2.2.0"
+INDI_3RD_COMMIT="v2.2.0"
+STELLAR_COMMIT="2.7"
+KSTARS_COMMIT="origin/stable-3.8.2"
+PHD2_COMMIT="v2.6.14"
 
 BUILD_DIR="/home/astroberry/Git"
 
