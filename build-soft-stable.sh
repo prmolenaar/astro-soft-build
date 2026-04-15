@@ -50,7 +50,7 @@ cd libXISF
 git fetch origin
 git switch -d --discard-changes $LIBXISF_COMMIT
 echo "Build LibXISF:                 `date`" >> $BUILD_DIR/build_log.txt
-[ ! -d ../build-libXISF ] && { cmake -B ../build-libXISF ../libXISF -DCMAKE_BUILD_TYPE=Release || { echo "LibXISF configuration failed"; exit 1; } }
+[ ! -d ../build-libXISF ] && { cmake -B ../build-libXISF ../libXISF -DCMAKE_BUILD_TYPE=Release -DUSE_BUNDLED_ZLIB=OFF || { echo "LibXISF configuration failed"; exit 1; } }
 cd ../build-libXISF
 make -j $JOBS || { echo "LibXISF compilation failed"; exit 1; }
 sudo make install || { echo "LibXISF installation failed"; exit 1; }
@@ -97,7 +97,7 @@ cd stellarsolver
 git fetch origin
 git switch -d --discard-changes $STELLAR_COMMIT
 echo "Build Stellarsolver            `date`" >> $BUILD_DIR/build_log.txt
-[ ! -d ../build-stellarsolver ] && { cmake -B ../build-stellarsolver ../stellarsolver -DCMAKE_BUILD_TYPE=Release || { echo "Stellarsolfer configuration failed"; exit 1; } }
+[ ! -d ../build-stellarsolver ] && { cmake -B ../build-stellarsolver ../stellarsolver -DUSE_QT5=ON -DCMAKE_BUILD_TYPE=Release || { echo "Stellarsolver configuration failed"; exit 1; } }
 cd ../build-stellarsolver
 make -j $JOBS || { echo "Stellarsolver compilation failed"; exit 1; }
 sudo make install || { echo "Stellarsolver installation failed"; exit 1; }
